@@ -28,6 +28,8 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+LOGIN_URL = "/login/"
+
 CSRF_TRUSTED_ORIGINS = ["https://*.railway.app"]
 CSRF_COOKIE_SECURE = True
 
