@@ -1,4 +1,5 @@
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest
+from django.shortcuts import render
 
-def index(_: HttpRequest):
-    return HttpResponse('<h1>Hello world!</h1>')
+def index(request: HttpRequest):
+    return render(request, 'index.html')
