@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,9 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f51he))ndm&axtxj2fmk3&yxsx5lrmtyyu*ega3#!(@4&_kjgf'
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
-DEBUG = False
+DEBUG = config('DJANGO_DEBUG')
 
 CSRF_TRUSTED_ORIGINS = ["https://*.railway.app"]
 CSRF_COOKIE_SECURE = True
@@ -35,7 +36,7 @@ ALLOWED_HOSTS = [
 ]
 
 if DEBUG:
-        ALLOWED_HOSTS += ['localhost', '127.0.0.1']
+    ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -62,7 +63,7 @@ ROOT_URLCONF = 'foundation.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'foundation/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,11 +120,20 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICTFILES_BASE_DIR = BASE_DIR / 'staticfiles'
+STATICFILES_VENDOR_DIR = STATICTFILES_BASE_DIR / 'vendors'
+
+# source(s) for python manage.py collectstatic
+STATICFILES_DIRS = [
+    STATICTFILES_BASE_DIR
+]
+
+# Ouput for collectstatic
+STATIC_ROOT = BASE_DIR.parent / 'local-cdn'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
