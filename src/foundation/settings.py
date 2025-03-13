@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
-DEBUG = config('DJANGO_DEBUG')
+DEBUG = config('DJANGO_DEBUG', cast=bool)
 
 CSRF_TRUSTED_ORIGINS = ["https://*.railway.app"]
 CSRF_COOKIE_SECURE = True
@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'foundation',
+    'commando',
 ]
 
 MIDDLEWARE = [
@@ -89,6 +90,7 @@ DATABASES = {
     }
 }
 
+CONN_MAX_AGE = config('CONN_MAX_AGE', cast=int, default=300) 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -125,6 +127,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICTFILES_BASE_DIR = BASE_DIR / 'staticfiles'
+STATICTFILES_BASE_DIR.mkdir(exist_ok=True, parents=True)
 STATICFILES_VENDOR_DIR = STATICTFILES_BASE_DIR / 'vendors'
 
 # source(s) for python manage.py collectstatic
