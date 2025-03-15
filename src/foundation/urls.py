@@ -9,6 +9,7 @@ app_name = 'foundation'
 
 urlpatterns = [
     path('', views.index, name="index"),
+    path('create/client', views.create_client, name="client.create"),
     
     # Auth views
     path("login/", auth_views.LoginView.as_view(template_name="login.html"), name="login"),
