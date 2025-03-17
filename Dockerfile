@@ -20,6 +20,8 @@ ENV PYTHONUNBUFFERED 1
 RUN apt-get update && apt-get install -y \
     # for postgres
     libpq-dev \
+    # for tailwind setup
+    curl \
     # for Pillow
     libjpeg-dev \
     # for CairoSVG
