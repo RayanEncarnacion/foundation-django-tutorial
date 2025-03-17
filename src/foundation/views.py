@@ -2,6 +2,9 @@ from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 from .forms.client import CreateClient
 from .models import Client
@@ -27,4 +30,9 @@ def create_client(request: HttpRequest):
     
     else:
         return render(request, "client/create.html", { "form": CreateClient() })
+
+
+
+class ClientListView(LoginRequiredMixin, ListView):
+    model = Client
 

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="px-4 mt-8 text-gray-900 dark:text-white">
+    <h1 class="mb-4 text-2xl font-bold">Clients
+        </h2>
+
+        {% include 'client/clients_table.html' with clients=client_list %}
+</div>
+{% endblock %}
