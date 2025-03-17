@@ -58,8 +58,8 @@ RUN echo "Downloading Tailwind CSS binary..." && \
     chmod +x tailwindcss-linux-arm64 && \
     echo "Renaming Tailwind CSS binary to 'tailwindcss'..." && \
     mv tailwindcss-linux-arm64 tailwindcss && \
-    echo "Create input.css with the tailwindcss import'..." && \
-    mkdir -p ./staticfiles/vendors && echo '@import "tailwindcss";' > ./staticfiles/vendors/input.css \
+    echo "Create input.css with the TailwindCSS import..." && \
+    mkdir -p ./staticfiles/vendors && echo '@import "tailwindcss";' > ./staticfiles/vendors/input.css && \
     echo "Processing and minifying CSS files..." && \
     ./tailwindcss -i ./staticfiles/vendors/input.css -o ./staticfiles/vendors/output.css --minify && \
     echo "Deleting Tailwind CSS executable..." && \
