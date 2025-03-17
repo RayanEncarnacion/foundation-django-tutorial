@@ -53,11 +53,11 @@ ENV DJANGO_DEBUG=${DJANGO_DEBUG}
 
 # Setup TailwindCSS
 RUN echo "Downloading Tailwind CSS binary..." && \
-    curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v4.0.14/tailwindcss-linux-arm64 && \
+    curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v4.0.14/tailwindcss-linux-x64 && \
     echo "Making Tailwind CSS binary executable..." && \
-    chmod +x tailwindcss-linux-arm64 && \
+    chmod +x tailwindcss-linux-x64 && \
     echo "Renaming Tailwind CSS binary to 'tailwindcss'..." && \
-    mv tailwindcss-linux-arm64 tailwindcss && \
+    mv tailwindcss-linux-x64 tailwindcss && \
     echo "Create input.css with the TailwindCSS import..." && \
     mkdir -p ./staticfiles/vendors && echo '@import "tailwindcss";' > ./staticfiles/vendors/input.css && \
     echo "Processing and minifying CSS files..." && \
