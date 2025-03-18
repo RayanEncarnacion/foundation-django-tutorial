@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="antialiased bg-gray-50 dark:bg-gray-900 max-w-[1040px]">
+<div class="antialiased bg-gray-50 dark:bg-gray-900">
     <nav
         class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
         <div class="flex flex-wrap justify-between items-center">
@@ -9,7 +9,7 @@
                 <button data-drawer-target="drawer-navigation"
                     data-drawer-toggle="drawer-navigation"
                     aria-controls="drawer-navigation"
-                    class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer  hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                     <svg aria-hidden="true" class="w-6 h-6" fill="currentColor"
                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
@@ -30,7 +30,7 @@
                     <img src="https://flowbite.s3.amazonaws.com/logo.svg"
                         class="mr-3 h-8" alt="Flowbite Logo" />
                     <span
-                        class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Foundation</span>
+                        class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
                 </a>
                 <form action="#" method="GET" class="hidden md:block md:pl-2">
                     <label for="topbar-search" class="sr-only">Search</label>
@@ -113,8 +113,7 @@
                                     <span
                                         class="font-semibold text-gray-900 dark:text-white">Bonnie
                                         Green</span>: "Hey, what's up? All set
-                                    for the
-                                    presentation?"
+                                    for the presentation?"
                                 </div>
                                 <div
                                     class="text-xs font-medium text-blue-600 dark:text-blue-500">
@@ -556,7 +555,7 @@
             </form>
             <ul class="space-y-2">
                 <li>
-                    <a href="#"
+                    <a href="{% url 'index' %}"
                         class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg aria-hidden="true"
                             class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -578,18 +577,15 @@
                         data-collapse-toggle="clients-pages">
                         <svg aria-hidden="true"
                             class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                            fill="currentColor" viewBox="0 0 20 20"
+                            fill="currentColor" viewBox="0 0 22 22"
                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2">
-                            </path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            <path fill-rule="evenodd"
+                                d="M7 2a2 2 0 0 0-2 2v1a1 1 0 0 0 0 2v1a1 1 0 0 0 0 2v1a1 1 0 1 0 0 2v1a1 1 0 1 0 0 2v1a1 1 0 1 0 0 2v1a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H7Zm3 8a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm-1 7a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3 1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1Z"
+                                clip-rule="evenodd" />
                         </svg>
                         <span
                             class="flex-1 ml-3 text-left whitespace-nowrap">Clients</span>
-                        <svg aria-hidden="true"
-                            class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        <svg aria-hidden="true" class="w-6 h-6"
                             fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
@@ -599,7 +595,7 @@
                     </button>
                     <ul id="clients-pages" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="#"
+                            <a href="{% url 'clients' %}"
                                 class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">List</a>
                         </li>
                         <li>
@@ -615,18 +611,15 @@
                         data-collapse-toggle="projects-pages">
                         <svg aria-hidden="true"
                             class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                            fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2"
+                            fill="none" viewBox="0 0 22 22"
                             xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z">
-                            </path>
-                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            <path stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="2"
+                                d="M5.005 11.19V12l6.998 4.042L19 12v-.81M5 16.15v.81L11.997 21l6.998-4.042v-.81M12.003 3 5.005 7.042l6.998 4.042L19 7.042 12.003 3Z" />
                         </svg>
                         <span
                             class="flex-1 ml-3 text-left whitespace-nowrap">Projects</span>
-                        <svg aria-hidden="true"
-                            class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        <svg aria-hidden="true" class="w-6 h-6"
                             fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
@@ -645,26 +638,26 @@
                         </li>
                     </ul>
                 </li>
-                <li>
+                <li class="text-left">
                     <a href="#"
-                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+
                         <svg aria-hidden="true"
                             class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                            fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2"
+                            fill="none" viewBox="0 0 22 22"
                             xmlns="http://www.w3.org/2000/svg">
-                            <line x1="12" y1="1" x2="12" y2="23"></line>
-                            <path
-                                d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6">
-                            </path>
+                            <path stroke="currentColor" stroke-linecap="round"
+                                stroke-width="2"
+                                d="M8 7V6a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1M3 18v-7a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                         </svg>
                         <span class="ml-3">Payments</span>
                     </a>
                 </li>
+
             </ul>
         </div>
         <div
-            class="absolute bottom-0 left-0 justify-center p-4 justify-center gap-5 w-full flex bg-white dark:bg-gray-800 z-20">
+            class="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white dark:bg-gray-800 z-20">
             <a href="#"
                 class="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
                 <svg aria-hidden="true" class="w-6 h-6" fill="currentColor"
@@ -835,9 +828,11 @@
         </div>
     </aside>
 
-    <main class="p-4 h-auto pt-20 min-h-[100vh]">
-        {% block main %}
-        {% endblock %}
+    <main class="p-4 md:ml-64 h-screen pt-20">
+        <div class="pt-8">
+            {% block main %}
+            {% endblock %}
+        </div>
     </main>
 </div>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.http import HttpRequest, HttpResponseRedirect, Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.views.generic import ListView
@@ -10,6 +10,7 @@ from django.contrib import messages
 from .forms.client import CreateClientForm, UpdateClientForm
 from .models import Client
 
+@login_required
 def index(request: HttpRequest):
     return render(request, 'index.html')
 
