@@ -27,6 +27,7 @@ def create_client(request: HttpRequest):
             email=request.POST["email"], 
             createdBy=request.user
         ).save()
+        messages.success(request, "Client created")
         
         return HttpResponseRedirect(reverse("clients"))
     
@@ -38,7 +39,6 @@ def update_client(request: HttpRequest, pk: int):
     form = UpdateClientForm(request.POST)
     
     if not form.is_valid():
-        print(form.errors)
         messages.error(request, "The submitted form had errors.")
         return HttpResponseRedirect(reverse("clients"))
         
