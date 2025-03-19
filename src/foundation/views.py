@@ -40,20 +40,20 @@ def update_client(request: HttpRequest, pk: int):
     if not form.is_valid():
         print(form.errors)
         messages.error(request, "The submitted form had errors.")
-    else: 
-        try:
-            client = Client.objects.get(pk=pk)
-        except Client.DoesNotExist:
-            raise Http404("No client matches the given query.") 
+        return HttpResponseRedirect(reverse("clients"))
         
-        print(form.cleaned_data['active'])
-        client.name = form.cleaned_data['name'] 
-        client.email = form.cleaned_data['email']
-        client.active = form.cleaned_data['active']
-        client.save()
-        
-        messages.success(request, "Client details updated.")
-        
+    try:
+        client = Client.objects.get(pk=pk)
+    except Client.DoesNotExist:
+        raise Http404("No client matches the given query.") 
+    
+    client.name = form.cleaned_data['name'] 
+    client.email = form.cleaned_data['email']
+    client.active = request.POST['active'] == "1" # Convert value to boolean
+    client.save()
+    
+    messages.success(request, "Client details updated.")
+    
     return HttpResponseRedirect(reverse("clients"))
     
 
