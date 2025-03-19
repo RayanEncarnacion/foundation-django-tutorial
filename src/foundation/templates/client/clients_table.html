@@ -1,6 +1,6 @@
 {% load datetime_formatter %}
 
-<div class="relative overflow-x-auto pb-16 sm:rounded-lg">
+<div class="relative overflow-hidden pb-16 sm:rounded-lg">
     <div
         class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900">
         <div class="mb-0">
@@ -100,7 +100,8 @@
                 </td>
                 <td class="px-4 py-2">
                     <div class="flex items-center">
-                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                        <div
+                            class='h-2.5 w-2.5 rounded-full bg-{{ client.active|yesno:"green,red" }}-500 me-2'>
                         </div>
                         <span>{{ client.active|yesno:"Active,Inactive" }}</span>
                     </div>
@@ -121,8 +122,8 @@
                     </button>
 
                     <div id="dropdown-{{ client.id }}"
-                        class="z-10 w-44 bg-white rounded text-gray-700 divide-y hidden divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-1 text-sm dark:text-gray-200"
+                        class="z-10 w-32 bg-white rounded text-gray-700 divide-y hidden divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                        <ul class="py-0 text-sm dark:text-gray-200"
                             aria-labelledby="dropdownDefaultButton-{{ client.id }}">
                             <li>
                                 <a href="#"
@@ -199,8 +200,11 @@
 
                                         <div class="col-span-6 sm:col-span-3">
                                             <label for="active"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status
-                                                {{ client.active }}</label>
+                                                class="flex gap-2 items-center mb-2 text-sm font-medium text-gray-900 dark:text-white">Status
+                                                <div
+                                                    class='h-2.5 w-2.5 rounded-full bg-{{ client.active|yesno:"green,red" }}-500 me-2'>
+                                                </div>
+                                            </label>
                                             <select id="active" name="active"
                                                 required
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -213,8 +217,8 @@
                                                 <option
                                                     {% if not client.active %}
                                                     selected {% endif %}
-                                                    value="0">
-                                                    Inactive</option>
+                                                    value="0">Inactive
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
