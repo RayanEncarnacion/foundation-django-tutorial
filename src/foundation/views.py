@@ -1,5 +1,5 @@
 from django.http import HttpRequest, HttpResponseRedirect, Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.views.generic import ListView
@@ -55,7 +55,15 @@ def update_client(request: HttpRequest, pk: int):
     messages.success(request, "Client details updated.")
     
     return HttpResponseRedirect(reverse("clients"))
+
+@require_http_methods(["POST"])
+def delete_client(request: HttpRequest, pk: int):
+    client = get_object_or_404(Client, pk=pk)
+    client.delete()
     
+    messages.success(request, "Client deleted successfully.")
+    
+    return HttpResponseRedirect(reverse("clients"))
 
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
