@@ -22,5 +22,18 @@ class Client(StateAudit):
 
     def __str__(self):
         return self.name
+    
     class Meta:
         db_table = "client"
+        
+class Project(StateAudit):
+    name = models.CharField(max_length=100, unique=True)
+    amount = models.FloatField()
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.name
+    class Meta:
+        db_table = "project"
+
+        
