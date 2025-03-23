@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponseRedirect, Http404
+from django.http import HttpRequest, HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -7,15 +7,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
 
-from .models import Client, Project
-from .forms.project import CreateProjectForm, UpdateProjectForm
-from .forms.client import CreateClientForm, UpdateClientForm
+from foundation.models import Client, Project
+from foundation.forms.project import CreateProjectForm, UpdateProjectForm
+from foundation.forms.client import CreateClientForm, UpdateClientForm
+from foundation.auth.decorators import user_owns_resource
 
 @login_required
 def index(request: HttpRequest):
     context = {
-        'clients_count': Client.objects.filter(deleted__exact=False).count(),
-        'projects_count': Project.objects.filter(deleted__exact=False).count()
+        'clients_count': Client.objects.filter(deleted__exact=False, createdBy = request.user).count(),
+        'projects_count': Project.objects.filter(deleted__exact=False, createdBy = request.user).count()
     }
     return render(request, 'index.html', context)
 
@@ -36,6 +37,7 @@ def create_client(request: HttpRequest):
         return render(request, "client/create.html", { "form": CreateClientForm() })
 
 @require_http_methods(["POST"])
+@user_owns_resource(Client)
 def update_client(request: HttpRequest, pk: int):
     form = UpdateClientForm(request.POST)
     
@@ -43,11 +45,11 @@ def update_client(request: HttpRequest, pk: int):
         messages.error(request, "The submitted form had errors.")
         return HttpResponseRedirect(reverse("clients"))
         
-    try:
-        client = Client.objects.get(pk=pk)
-    except Client.DoesNotExist:
-        raise Http404("No client matches the given query.") 
+    client = get_object_or_404(Client, pk=pk)
     
+    if not client.createdBy == request.user:
+        HttpResponseForbidden()
+        
     client.name = form.cleaned_data['name'] 
     client.email = form.cleaned_data['email']
     client.active = request.POST['active'] == "1"
@@ -58,6 +60,7 @@ def update_client(request: HttpRequest, pk: int):
     return HttpResponseRedirect(reverse("clients"))
 
 @require_http_methods(["POST"])
+@user_owns_resource(Client)
 def delete_client(request: HttpRequest, pk: int):
     client = get_object_or_404(Client, pk=pk)
     client.delete()
@@ -71,7 +74,7 @@ class ClientListView(LoginRequiredMixin, ListView):
     
     def get_queryset(self):
         return (Client.objects
-                     .filter(deleted__exact=False)
+                     .filter(deleted__exact=False, createdBy = self.request.user)
                      .order_by("-createdAt"))
         
 ## Projects views
@@ -93,6 +96,7 @@ def create_project(request: HttpRequest):
         return render(request, "project/create.html", { "form": form })
 
 @require_http_methods(["POST"])
+@user_owns_resource(Project)
 def delete_project(request: HttpRequest, pk: int):
     project = get_object_or_404(Project, pk=pk)
     project.delete()
@@ -107,7 +111,7 @@ class ProjectListView(LoginRequiredMixin, ListView):
     
     def get_queryset(self):
         return (Project.objects.select_related("client")
-                               .filter(deleted__exact=False)
+                               .filter(deleted__exact=False, createdBy = self.request.user)
                                .order_by("-createdAt"))
         
     def get_context_data(self, **kwargs):
@@ -115,8 +119,9 @@ class ProjectListView(LoginRequiredMixin, ListView):
         context['clients'] = Client.objects.all()
         
         return context
-        
+
 @require_http_methods(["POST"])
+@user_owns_resource(Project)
 def update_project(request: HttpRequest, pk: int):
     form = UpdateProjectForm(request.POST)
     
