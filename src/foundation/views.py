@@ -13,7 +13,11 @@ from .forms.client import CreateClientForm, UpdateClientForm
 
 @login_required
 def index(request: HttpRequest):
-    return render(request, 'index.html')
+    context = {
+        'clients_count': Client.objects.filter(deleted__exact=False).count(),
+        'projects_count': Project.objects.filter(deleted__exact=False).count()
+    }
+    return render(request, 'index.html', context)
 
 @login_required
 def create_client(request: HttpRequest):
