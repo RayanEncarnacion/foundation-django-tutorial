@@ -29,6 +29,7 @@ INTERNAL_IPS = [
 ]
 
 LOGIN_URL = "/login/"
+LOGOUT_REDIRECT_URL = LOGIN_URL
 
 CSRF_TRUSTED_ORIGINS = ["https://*.railway.app"]
 CSRF_COOKIE_SECURE = True
