@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ block.super}} :: Project | Create{% endblock %}
+
+{% block main %}
+<div
+    class="h-full mt-14 flex items-center justify-center px-4 space-y-4 text-gray-900 dark:text-white">
+    <div class="w-fit flex flex-col items-center space-y-4">
+        <h2 class="ms-4 mb-8 text-left block w-100 text-xl font-bold">Add
+            a new project</h2>
+
+        <form action="{% url 'create_project' %}" method="POST"
+            class="max-w-sm w-full px-0">
+
+            {% csrf_token %}
+
+            {% for field in form %}
+                {{ field.label }}
+                {{ field }}
+
+                {% if field.errors %}
+                    <p class="mb-2 text-sm text-red-600 dark:text-red-500">
+                        {{ field.errors.0 }}
+                    </p>
+                {% endif %}
+            {% endfor %}
+
+            <button type="submit"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 mt-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -9,19 +9,28 @@ app_name = 'foundation'
 
 urlpatterns = [
     path('', views.index, name="index"),
-    path('create/client', views.create_client, name="create_client"),
+    
+    # Client views
+    path('client/create', views.create_client, name="create_client"),
     path('client/<int:pk>/update', views.update_client, name="update_client"),
     path('client/<int:pk>/delete', views.delete_client, name="delete_client"),
     path('clients', 
          views.ClientListView.as_view(template_name="client/list.html"), name="clients"),
     
+    # Project views
+    path('project/create', views.create_project, name="create_project"),
+    path('project/<int:pk>/update', views.update_project, name="update_project"),
+    path('project/<int:pk>/delete', views.delete_project, name="delete_project"),
+    path('projects', 
+         views.ProjectListView.as_view(), name="projects"),
+    
     # Auth views
     path("login/", auth_views.LoginView.as_view(template_name="login.html"), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     
+    # Admin views
     path('admin/', admin.site.urls),
 ]
-
 
 """ if settings.DEBUG:
     import debug_toolbar
