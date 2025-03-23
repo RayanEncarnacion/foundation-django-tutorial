@@ -11,10 +11,11 @@
     <script src="{% static 'vendors/flowbite.min.js' %}"></script>
 </head>
 
-<body class="antialiased">
+<body class="antialiased dark:bg-gray-900">
     {% block content %}
     {% endblock  %}s
 
+    <!-- ! Display django messages inside toasts -->
     {% for message in messages %}
     <div id="toast-bottom-right"
         class="fixed flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow-sm right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800"
