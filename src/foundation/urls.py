@@ -14,15 +14,14 @@ urlpatterns = [
     path('client/create', views.create_client, name="create_client"),
     path('client/<int:pk>/update', views.update_client, name="update_client"),
     path('client/<int:pk>/delete', views.delete_client, name="delete_client"),
-    path('clients', 
-         views.ClientListView.as_view(template_name="client/list.html"), name="clients"),
+    path('client/<int:pk>/projects', views.ClientProjectsListView.as_view(), name="client_projects"),
+    path('clients', views.ClientListView.as_view(), name="clients"),
     
     # Project views
     path('project/create', views.create_project, name="create_project"),
     path('project/<int:pk>/update', views.update_project, name="update_project"),
     path('project/<int:pk>/delete', views.delete_project, name="delete_project"),
-    path('projects', 
-         views.ProjectListView.as_view(), name="projects"),
+    path('projects', views.ProjectListView.as_view(), name="projects"),
     
     # Auth views
     path("login/", auth_views.LoginView.as_view(template_name="login.html"), name="login"),

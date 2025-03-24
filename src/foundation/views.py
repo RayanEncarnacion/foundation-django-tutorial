@@ -39,16 +39,16 @@ def create_client(request: HttpRequest):
 @require_http_methods(["POST"])
 @user_owns_resource(Client)
 def update_client(request: HttpRequest, pk: int):
+    client = get_object_or_404(Client, pk=pk)
+    
+    if not client.createdBy == request.user:
+        HttpResponseForbidden()
+        
     form = UpdateClientForm(request.POST)
     
     if not form.is_valid():
         messages.error(request, "The submitted form had errors.")
         return HttpResponseRedirect(reverse("clients"))
-        
-    client = get_object_or_404(Client, pk=pk)
-    
-    if not client.createdBy == request.user:
-        HttpResponseForbidden()
         
     client.name = form.cleaned_data['name'] 
     client.email = form.cleaned_data['email']
@@ -71,11 +71,27 @@ def delete_client(request: HttpRequest, pk: int):
 
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
+    template_name="client/list.html"
     
     def get_queryset(self):
         return (Client.objects
                      .filter(deleted__exact=False, createdBy = self.request.user)
                      .order_by("-createdAt"))
+
+class ClientProjectsListView(LoginRequiredMixin, ListView):
+    model = Project
+    template_name="client/projects.html"       
+    
+    def get_queryset(self):
+        return (Project.objects.select_related("client")
+                               .filter(deleted__exact=False, client_id = self.kwargs['pk'])
+                               .order_by("-createdAt"))
+        
+    def get_context_data(self, **kwargs):
+        context = super(ClientProjectsListView, self).get_context_data(**kwargs)
+        context['client'] = Client.objects.get(pk=self.kwargs['pk'])
+        
+        return context
         
 ## Projects views
 @login_required
@@ -89,10 +105,16 @@ def create_project(request: HttpRequest):
         Project(createdBy = request.user, **form.cleaned_data).save()
         messages.success(request, "Project created")
         
-        return HttpResponseRedirect(reverse("projects"))
+        return HttpResponseRedirect(request.path_info)
     
     else:
-        form = CreateProjectForm()
+        client_id = request.GET.get('client')
+        
+        if client_id:
+            get_object_or_404(Client, pk=client_id)
+            
+        form = CreateProjectForm(initial={ 'client': client_id })
+        
         return render(request, "project/create.html", { "form": form })
 
 @require_http_methods(["POST"])
@@ -123,14 +145,13 @@ class ProjectListView(LoginRequiredMixin, ListView):
 @require_http_methods(["POST"])
 @user_owns_resource(Project)
 def update_project(request: HttpRequest, pk: int):
-    form = UpdateProjectForm(request.POST)
+    project = get_object_or_404(Project, pk=pk)
+    form = UpdateProjectForm(request.POST, instance=project)
     
     if not form.is_valid():
-        print(form.errors)
         messages.error(request, "The submitted form had errors.")
         return HttpResponseRedirect(reverse("projects"))
         
-    project = get_object_or_404(Project, pk=pk)
     project.name = form.cleaned_data['name'] 
     project.amount = form.cleaned_data['amount']
     project.client = form.cleaned_data['client']

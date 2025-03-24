@@ -194,6 +194,11 @@
                                     data-modal-show="editClientModal-{{ client.id }}"
                                     class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Edit</a>
                             </li>
+                            <li>
+                                <a href="{% url 'client_projects' client.id %}"
+                                    class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">See
+                                    projects</a>
+                            </li>
                         </ul>
                         <div>
                             <button type="button"
