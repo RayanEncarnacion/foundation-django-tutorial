@@ -75,8 +75,7 @@ class ClientListView(LoginRequiredMixin, ListView):
     
     def get_queryset(self):
         return (Client.objects
-                     .filter(deleted__exact=False, createdBy = self.request.user)
-                     .order_by("-createdAt"))
+                     .filter(deleted__exact=False, createdBy = self.request.user))
 
 class ClientProjectsListView(LoginRequiredMixin, ListView):
     model = Project
@@ -84,8 +83,7 @@ class ClientProjectsListView(LoginRequiredMixin, ListView):
     
     def get_queryset(self):
         return (Project.objects.select_related("client")
-                               .filter(deleted__exact=False, client_id = self.kwargs['pk'])
-                               .order_by("-createdAt"))
+                               .filter(deleted__exact=False, client_id = self.kwargs['pk']))
         
     def get_context_data(self, **kwargs):
         context = super(ClientProjectsListView, self).get_context_data(**kwargs)
@@ -133,8 +131,7 @@ class ProjectListView(LoginRequiredMixin, ListView):
     
     def get_queryset(self):
         return (Project.objects.select_related("client")
-                               .filter(deleted__exact=False, createdBy = self.request.user)
-                               .order_by("-createdAt"))
+                               .filter(deleted__exact=False, createdBy = self.request.user))
         
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)

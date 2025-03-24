@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -9,6 +8,7 @@ class Audit(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['-createdAt']
 
 class StateAudit(Audit):
     active = models.BooleanField(default=True)
@@ -33,6 +33,7 @@ class Project(StateAudit):
     
     def __str__(self):
         return self.name
+    
     class Meta:
         db_table = "project"
 
