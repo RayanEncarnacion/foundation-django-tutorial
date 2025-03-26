@@ -77,19 +77,16 @@ class ClientListView(LoginRequiredMixin, ListView):
         return (Client.objects
                      .filter(deleted__exact=False, createdBy = self.request.user))
 
-class ClientProjectsListView(LoginRequiredMixin, ListView):
-    model = Project
-    template_name="client/projects.html"       
+@login_required
+def client_projects(request, pk):
+    client = get_object_or_404(Client, pk=pk)
     
-    def get_queryset(self):
-        return (Project.objects.select_related("client")
-                               .filter(deleted__exact=False, client_id = self.kwargs['pk']))
-        
-    def get_context_data(self, **kwargs):
-        context = super(ClientProjectsListView, self).get_context_data(**kwargs)
-        context['client'] = Client.objects.get(pk=self.kwargs['pk'])
-        
-        return context
+    context = {
+        "client": client,
+        "projects": client.projects.filter(deleted__exact=False)
+    }
+    
+    return render(request, "client/projects.html", context)
         
 ## Projects views
 @login_required

@@ -29,7 +29,7 @@ class Client(StateAudit):
 class Project(StateAudit):
     name = models.CharField(max_length=100, unique=True)
     amount = models.FloatField()
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='projects')
     
     def __str__(self):
         return self.name

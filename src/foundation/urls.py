@@ -14,7 +14,7 @@ urlpatterns = [
     path('client/create', views.create_client, name="create_client"),
     path('client/<int:pk>/update', views.update_client, name="update_client"),
     path('client/<int:pk>/delete', views.delete_client, name="delete_client"),
-    path('client/<int:pk>/projects', views.ClientProjectsListView.as_view(), name="client_projects"),
+    path('client/<int:pk>/projects', views.client_projects, name="client_projects"),
     path('clients', views.ClientListView.as_view(), name="clients"),
     
     # Project views
