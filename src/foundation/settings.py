@@ -12,9 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from decouple import config
-# import mimetypes
-
-# mimetypes.add_type("application/javascript", ".js", True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +25,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 DEBUG = True
 
 INTERNAL_IPS = [
-    "127.0.0.1",
+    "127.0.0.1"
 ]
 
 LOGIN_URL = "/login/"
@@ -42,11 +39,7 @@ SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_AGE = 15 * 60 # 15 mins to expire
 SESSION_SAVE_EVERY_REQUEST = True
 
-ALLOWED_HOSTS = [
-    '.railway.app',
-    'localhost',
-    '127.0.0.1'
-]
+ALLOWED_HOSTS = ['.railway.app']
 
 if DEBUG:
     ALLOWED_HOSTS += ['localhost', '127.0.0.1']
@@ -55,7 +48,7 @@ if DEBUG:
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
-    # "debug_toolbar",
+    "debug_toolbar",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,9 +59,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
