@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from decouple import config
+# import mimetypes
+
+# mimetypes.add_type("application/javascript", ".js", True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,13 +25,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
-DEBUG = config('DJANGO_DEBUG', cast=bool)
+DEBUG = True
 
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
 LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
 CSRF_TRUSTED_ORIGINS = ["https://*.railway.app"]
@@ -39,7 +43,9 @@ SESSION_COOKIE_AGE = 15 * 60 # 15 mins to expire
 SESSION_SAVE_EVERY_REQUEST = True
 
 ALLOWED_HOSTS = [
-    '.railway.app'
+    '.railway.app',
+    'localhost',
+    '127.0.0.1'
 ]
 
 if DEBUG:
@@ -49,7 +55,7 @@ if DEBUG:
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
-    "debug_toolbar",
+    # "debug_toolbar",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -60,7 +66,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
