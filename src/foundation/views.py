@@ -1,11 +1,11 @@
 from django.http import HttpRequest, HttpResponseRedirect, HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.contrib import messages
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from django.contrib import messages
 
 from foundation.models import Client, Project
 from foundation.forms.project import CreateProjectForm, UpdateProjectForm
