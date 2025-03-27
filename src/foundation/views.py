@@ -15,8 +15,8 @@ from foundation.auth.decorators import user_owns_resource
 @login_required
 def index(request: HttpRequest):
     context = {
-        'clients_count': Client.objects.filter(deleted__exact=False, createdBy = request.user).count(),
-        'projects_count': Project.objects.filter(deleted__exact=False, createdBy = request.user).count()
+        'clients_count': Client.objects.filter(deleted=False, createdBy = request.user).count(),
+        'projects_count': Project.objects.filter(deleted=False, createdBy = request.user).count()
     }
     return render(request, 'index.html', context)
 
@@ -75,7 +75,8 @@ class ClientListView(LoginRequiredMixin, ListView):
     
     def get_queryset(self):
         return (Client.objects
-                     .filter(deleted__exact=False, createdBy = self.request.user))
+                     .filter(deleted=False, createdBy = self.request.user)
+                     .values('id', 'name', 'email', 'createdAt', 'active'))
 
 @login_required
 def client_projects(request, pk):
@@ -83,7 +84,10 @@ def client_projects(request, pk):
     
     context = {
         "client": client,
-        "projects": client.projects.filter(deleted__exact=False)
+        "clients": Client.objects.filter(deleted=False).values('id', 'name'),
+        "projects": (Project.objects.select_related("client")
+                               .filter(deleted=False, client_id=client.id)
+                               .values('id', 'amount', 'name', 'createdAt', 'active', 'client_id', "client__name"))
     }
     
     return render(request, "client/projects.html", context)
@@ -128,11 +132,12 @@ class ProjectListView(LoginRequiredMixin, ListView):
     
     def get_queryset(self):
         return (Project.objects.select_related("client")
-                               .filter(deleted__exact=False, createdBy = self.request.user))
+                               .filter(deleted=False, createdBy = self.request.user)
+                               .values('id', 'amount', 'name', 'createdAt', 'active', "client_id", "client__name"))
         
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
-        context['clients'] = Client.objects.all()
+        context['clients'] = Client.objects.filter(deleted=False).values('id', 'name')
         
         return context
 

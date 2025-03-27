@@ -98,7 +98,7 @@
                     {{ project.amount|floatformat:2 }}
                 </td>
                 <td class="px-4 py-2">
-                    {{ client.name }}
+                    {{ project.client__name }}
                 </td>
                 <td class="px-4 py-2">
                     {{ project.createdAt|format_datetime  }}
@@ -274,7 +274,7 @@
                                                 required="" id="id_client">
                                                 {% for client in clients %}
                                                 <option value="{{ client.id }}"
-                                                    {% if project.client.id == client.id %}selected{% endif %}>
+                                                    {% if project.client_id == client.id %}selected{% endif %}>
                                                     {{ client.name }}</option>
                                                 {% endfor %}
                                             </select>
