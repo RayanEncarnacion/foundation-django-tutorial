@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Audit(models.Model):
-    deleted = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False, db_index=True)
     createdAt = models.DateTimeField(auto_now_add=True, db_column="created_at")
     createdBy = models.ForeignKey(User, null=True, db_column="created_by", on_delete=models.SET_NULL) 
 
@@ -11,10 +11,11 @@ class Audit(models.Model):
         ordering = ['-createdAt']
 
 class StateAudit(Audit):
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=True, db_index=True)
 
     class Meta:
         abstract = True
+        indexes = [ models.Index(fields=["active"]) ]
 
 class Client(StateAudit):
     name = models.CharField(max_length=100, unique=True)
