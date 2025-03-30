@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 
-from foundation.models import Client, Project
+from foundation.models import Client, PayDay, Project
 from foundation.forms.project import CreateProjectForm, UpdateProjectForm
 from foundation.forms.client import CreateClientForm, UpdateClientForm
 from foundation.auth.decorators import user_owns_resource
@@ -85,9 +85,8 @@ def client_projects(request, pk):
     context = {
         "client": client,
         "clients": Client.objects.filter(deleted=False).values('id', 'name'),
-        "projects": (Project.objects.select_related("client")
-                               .filter(deleted=False, client_id=client.id)
-                               .values('id', 'amount', 'name', 'createdAt', 'active', 'client_id', "client__name"))
+        "projects": (Project.objects.prefetch_related("client", "pay_days")
+                                    .filter(deleted=False, client_id=client.id))
     }
     
     return render(request, "client/projects.html", context)
@@ -141,13 +140,13 @@ class ProjectListView(LoginRequiredMixin, ListView):
     template_name="project/list.html"       
     
     def get_queryset(self):
-        return (Project.objects.select_related("client")
-                               .filter(deleted=False, createdBy = self.request.user)
-                               .values('id', 'amount', 'name', 'createdAt', 'active', "client_id", "client__name"))
-        
+        return (Project.objects.prefetch_related("client", "pay_days")
+                               .filter(deleted=False, createdBy = self.request.user))
+                               
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
-        context['clients'] = Client.objects.filter(deleted=False).values('id', 'name')
+        context['clients'] = (Client.objects.filter(active=True, deleted=False, createdBy=self.request.user)
+                                            .values('id', 'name'))
         
         return context
 
