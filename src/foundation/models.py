@@ -38,4 +38,11 @@ class Project(StateAudit):
     class Meta:
         db_table = "project"
 
-        
+class PayDay(models.Model):
+    day = models.SmallIntegerField()
+    project = models.ForeignKey(Project, on_delete=models.DO_NOTHING, related_name='pay_days')
+    active = models.BooleanField(default=True, db_index=True)
+    deleted = models.BooleanField(default=False, db_index=True)
+    
+    class Meta:
+        db_table = "pay_day"
