@@ -2,16 +2,70 @@
 
 {% block title %}{{ block.super}} :: Project | Create{% endblock %}
 
+{% block head %}
+<!-- ! Requirements to use Select2 library to handle multi-selects in pay days -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+    crossorigin="anonymous"></script>
+<link
+    href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    rel="stylesheet" />
+<script
+    src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+        color: black !important;
+    }
+
+    .select2-selection--multiple {
+        background: #364153 !important;
+        height: 42px !important;
+        border-color: #6a7282 !important;
+    }
+
+    .select2-container--default .select2-results>.select2-results__options {
+        background: #364153 !important;
+        color: white !important;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background: #155dfc;
+        color: white !important;
+        border: #364153;
+    }
+
+    .select2-container--default .select2-results__option--selected {
+        background-color: #101828;
+    }
+
+    .select2-selection__choice__remove {
+        border: none !important;
+        color: white !important;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+        color: white !important;
+    }
+
+    .select2-container .select2-search--inline .select2-search__field {
+        height: 22px !important;
+        margin-top: .5rem !important;
+        padding-left: .5rem !important;
+    }
+</style>
+{% endblock %}
+
 {% block main %}
 <div
     class="h-full mt-14 flex items-center justify-center px-4 space-y-4 text-gray-900 dark:text-white">
     <div class="w-fit flex flex-col items-center space-y-4">
-        <h2 class="ms-4 mb-8 text-left block w-100 text-xl font-bold">Add
-            a new project</h2>
+        <h2 class="ms-4 mb-8 text-left block w-100 text-xl font-bold">
+            Add a new project
+        </h2>
 
         <form action="{% url 'create_project' %}" method="POST"
             class="max-w-sm w-full px-0">
-
             {% csrf_token %}
 
             {% for field in form %}
@@ -26,8 +80,18 @@
             {% endfor %}
 
             <button type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 mt-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 mt-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Submit
+            </button>
         </form>
     </div>
 </div>
+
+<!-- ! Initialize select inputs with Select2 library -->
+<script>
+    $(document).ready(() => $("select[multiple]").select2({
+        placeholder: "Select pay day(s)",
+        allowClear: true
+    }));
+</script>
 {% endblock %}
