@@ -5,6 +5,7 @@ default_field_classes = 'bg-gray-50 border border-gray-600 text-gray-900 text-sm
 
 class CreateProjectForm(forms.ModelForm):    
     payDays = forms.MultipleChoiceField(
+        label='Pay day(s)',
         choices=[(i, i) for i in range(1, 31)],
         widget=forms.SelectMultiple(attrs={'class': default_field_classes})
     )
