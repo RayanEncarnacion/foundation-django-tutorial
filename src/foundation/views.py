@@ -112,7 +112,7 @@ def create_project(request: HttpRequest):
         if client_id:
             get_object_or_404(Client, pk=client_id)
             
-        form = CreateProjectForm(initial={ 'client': client_id })
+        form = CreateProjectForm(initial={ 'client': client_id }, user=request.user)
         
         return render(request, "project/create.html", { "form": form })
 
