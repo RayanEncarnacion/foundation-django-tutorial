@@ -101,7 +101,17 @@ def create_project(request: HttpRequest):
         if not form.is_valid():
             return render(request, "project/create.html", { "form": form, "errors": form.errors })
         
-        Project(createdBy = request.user, **form.cleaned_data).save()
+        project = Project.objects.create(
+            name = form.cleaned_data['name'],
+            amount = form.cleaned_data['amount'],
+            client = form.cleaned_data['client'],
+            createdBy = request.user,
+        )
+        
+        PayDay.objects.bulk_create(
+            [PayDay(day=n, project=project) for n in form.cleaned_data['payDays']]
+        )
+        
         messages.success(request, "Project created")
         
         return HttpResponseRedirect(request.path_info)
