@@ -70,8 +70,13 @@
                 <th scope="col" class="px-4 py-3">
                     Amount
                 </th>
+                {% if not client %}
                 <th scope="col" class="px-4 py-3">
                     Client
+                </th>
+                {% endif %}
+                <th scope="col" class="px-4 py-3">
+                    Pay days
                 </th>
                 <th scope="col" class="px-4 py-3">
                     Created At
@@ -97,8 +102,16 @@
                 <td class="px-4 py-2">
                     {{ project.amount|floatformat:"2g" }}
                 </td>
+
+                {% if not client %}
                 <td class="px-4 py-2">
-                    {{ project.client__name }}
+                    {{ project.client.name }}
+                </td>
+                {% endif %}
+                <td class="px-4 py-2">
+                    {% for pay_day in project.pay_days.all %}
+                    {{ pay_day.day }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
                 </td>
                 <td class="px-4 py-2">
                     {{ project.createdAt|format_datetime  }}
