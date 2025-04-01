@@ -15,8 +15,6 @@ def schedule_payments():
                                              deleted=False)
                                      .select_related("project"))
     
-    print(active_pay_days)
-    
     Payment.objects.bulk_create([
         Payment(
             amount=pay_data.project.amount, 

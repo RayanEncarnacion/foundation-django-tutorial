@@ -105,12 +105,12 @@ def create_project(request: HttpRequest):
         if not form.is_valid():
             return render(request, "project/create.html", { "form": form, "errors": form.errors })
         
-        project = Project(
+        project = Project.objects.create(
             name = form.cleaned_data['name'],
             amount = form.cleaned_data['amount'],
             client = form.cleaned_data['client'],
             createdBy = request.user,
-        ).save()
+        )
         
         for day in form.cleaned_data['payDays']:
             PayDay(day=day, project=project).save()
