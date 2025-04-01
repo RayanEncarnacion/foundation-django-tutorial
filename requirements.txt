@@ -4,3 +4,4 @@ python-decouple
 requests
 whitenoise
 django-debug-toolbar
+django-background-tasks

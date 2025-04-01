@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'foundation',
     'commando',
+    'background_task',
 ]
 
 MIDDLEWARE = [

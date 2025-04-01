@@ -6,15 +6,19 @@ from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
+from background_task.models import Task
 
 from foundation.models import Client, PayDay, Payment, Project
 from foundation.forms.project import CreateProjectForm, UpdateProjectForm
 from foundation.forms.client import CreateClientForm, UpdateClientForm
 from foundation.auth.decorators import user_owns_resource
+from foundation.task import schedule_payments
 from foundation.utils import get_next_month_date
 
 @login_required
 def index(request: HttpRequest):
+    schedule_payments(repeat=Task.DAILY)
+    
     context = {
         'clients_count': Client.objects.filter(deleted=False, createdBy = request.user).count(),
         'projects_count': Project.objects.filter(deleted=False, createdBy = request.user).count()
