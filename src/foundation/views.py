@@ -7,10 +7,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 
-from foundation.models import Client, PayDay, Project
+from foundation.models import Client, PayDay, Payment, Project
 from foundation.forms.project import CreateProjectForm, UpdateProjectForm
 from foundation.forms.client import CreateClientForm, UpdateClientForm
 from foundation.auth.decorators import user_owns_resource
+from foundation.utils import get_next_month_date
 
 @login_required
 def index(request: HttpRequest):
@@ -100,16 +101,16 @@ def create_project(request: HttpRequest):
         if not form.is_valid():
             return render(request, "project/create.html", { "form": form, "errors": form.errors })
         
-        project = Project.objects.create(
+        project = Project(
             name = form.cleaned_data['name'],
             amount = form.cleaned_data['amount'],
             client = form.cleaned_data['client'],
             createdBy = request.user,
-        )
+        ).save()
         
-        PayDay.objects.bulk_create(
-            [PayDay(day=n, project=project) for n in form.cleaned_data['payDays']]
-        )
+        for day in form.cleaned_data['payDays']:
+            PayDay(day=day, project=project).save()
+            Payment(amount=project.amount, project=project, due_date=get_next_month_date(int(day))).save()
         
         messages.success(request, "Project created")
         
