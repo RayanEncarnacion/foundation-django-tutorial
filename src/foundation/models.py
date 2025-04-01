@@ -46,3 +46,13 @@ class PayDay(models.Model):
     
     class Meta:
         db_table = "pay_day"
+        
+class Payment(models.Model):
+    amount = models.FloatField()
+    due_date = models.DateField()
+    project = models.ForeignKey(Project, on_delete=models.DO_NOTHING, related_name='payments')
+    payed = models.BooleanField(default=False, db_index=True)
+    payed_at = models.DateTimeField(null=True)
+    
+    class Meta:
+        db_table = "payment"
