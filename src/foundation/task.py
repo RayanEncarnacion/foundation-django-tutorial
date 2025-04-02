@@ -14,7 +14,8 @@ def schedule_payments():
     today = date.today().day
     active_pay_days = (PayDay.objects.filter(active=True, 
                                              day=today, 
-                                             deleted=False)
+                                             deleted=False,
+                                             project__deleted=False)
                                      .select_related("project"))
     
     Payment.objects.bulk_create([
@@ -36,7 +37,7 @@ def schedule_payments():
 @background(schedule=60) 
 def notify_due_payments():
     today = date.today()
-    overdue_payments = (Payment.objects.filter(payed=False, due_date__lt=today)
+    overdue_payments = (Payment.objects.filter(payed=False, active=False, due_date__lt=today)
                                        .select_related("project__client"))
     payments_info = ""
     
