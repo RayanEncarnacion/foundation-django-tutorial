@@ -39,6 +39,13 @@ class Project(StateAudit):
     amount = models.FloatField()
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='projects')
     
+    def delete(self, **kwargs):
+        # "Delete" project payments
+        PayDay.objects.filter(project=self, deleted=False, active=True).update(deleted=True, active=False)
+        Payment.objects.filter(project=self, payed=False, active=True).update(active=False)
+        
+        super().delete(**kwargs)
+    
     def __str__(self):
         return self.name
     
