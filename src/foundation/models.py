@@ -53,6 +53,7 @@ class Payment(models.Model):
     project = models.ForeignKey(Project, on_delete=models.DO_NOTHING, related_name='payments')
     payed = models.BooleanField(default=False, db_index=True)
     payed_at = models.DateTimeField(null=True)
+    active = models.BooleanField(default=False, db_index=True)
     
     class Meta:
         db_table = "payment"
