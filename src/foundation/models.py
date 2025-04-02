@@ -12,6 +12,13 @@ class Audit(models.Model):
 
 class StateAudit(Audit):
     active = models.BooleanField(default=True, db_index=True)
+    
+    def delete(self, **kwargs):
+        self.active = False
+        self.deleted = True
+        self.save(**kwargs)
+        
+        super().save(**kwargs)
 
     class Meta:
         abstract = True
