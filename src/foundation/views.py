@@ -12,11 +12,14 @@ from foundation.models import Client, PayDay, Payment, Project
 from foundation.forms.project import CreateProjectForm, UpdateProjectForm
 from foundation.forms.client import CreateClientForm, UpdateClientForm
 from foundation.auth.decorators import user_owns_resource
-from foundation.task import schedule_payments
+from foundation.task import notify_due_payments, schedule_payments
 from foundation.utils import get_next_month_date
 
 @login_required
 def index(request: HttpRequest):
+    
+    # Schedule tasks
+    notify_due_payments()
     schedule_payments(repeat=Task.DAILY)
     
     context = {
