@@ -1,0 +1,154 @@
+{% load datetime_formatter %}
+
+<div class="relative overflow-hidden pb-16 sm:rounded-lg">
+    <div
+        class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900">
+        <div class="mb-0">
+            <button id="dropdownActionButton"
+                data-dropdown-toggle="dropdownAction"
+                class="inline-flex items-center text-gray-500 bg-white border border-gray-600 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                type="button">
+                <span class="sr-only">Action button</span>
+                Action
+                <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
+            <div id="dropdownAction"
+                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                    aria-labelledby="dropdownActionButton">
+                    <li>
+                        <a href="#"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reward</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Promote</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Activate
+                            account</a>
+                    </li>
+                </ul>
+                <div class="py-1">
+                    <a href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete
+                        User</a>
+                </div>
+            </div>
+        </div>
+        <label for="table-search" class="sr-only">Search</label>
+        <div class="relative">
+            <div
+                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </svg>
+            </div>
+            <input type="text" id="table-search-users"
+                class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-600 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search for payments">
+        </div>
+    </div>
+    <table
+        class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 sm:rounded-lg">
+        <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-4 py-3">
+                    Amount
+                </th>
+                <th scope="col" class="px-4 py-3">
+                    Client
+                </th>
+                <th scope="col" class="px-4 py-3">
+                    Project
+                </th>
+                <th scope="col" class="px-4 py-3">
+                    Due date
+                </th>
+                <th scope="col" class="px-4 py-3">
+                    Payed at
+                </th>
+                <th scope="col" class="px-4 py-3">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in payments %}
+            <tr
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td class="px-4 py-2">
+                    {{ payment.amount|floatformat:"2g" }}
+                </td>
+                <td class="px-4 py-2 text-base font-semibold dark:text-white">
+                    {{ payment.project.client.name }}
+                </td>
+                <td class="px-4 py-2 text-base font-semibold dark:text-white">
+                    {{ payment.project.name }}
+                </td>
+                <td class="px-4 py-2">
+                    {{ payment.due_date|date:"m/d/Y"  }}
+                </td>
+                <td class="px-4 py-2">
+                    <div class="flex items-center">
+                        {% if payment.payed_at %}
+                        {{ payment.payed_at|format_datetime }}
+                        {% else %}
+                        <span
+                            class='py-1 px-2 rounded-full bg-red-500 me-2 text-white text-xs font-semibold'>N/A</span>
+                        {% endif %}
+                    </div>
+                </td>
+                <td class="px-4 py-2">
+
+                    <!-- ACTIONS DROPDOWN START -->
+                    <button id="dropdownDefaultButton-{{ payment.id }}"
+                        data-dropdown-toggle="dropdown-{{ payment.id }}"
+                        class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
+                        type="button">
+                        <svg class="w-5 h-5" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z">
+                            </path>
+                        </svg>
+                    </button>
+
+                    <div id="dropdown-{{ payment.id }}"
+                        class="z-10 w-32 bg-white rounded text-gray-700 divide-y hidden divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                        <ul class="py-0 text-sm dark:text-gray-200"
+                            aria-labelledby="dropdownDefaultButton-{{ payment.id }}">
+                            <li>
+                                <button
+                                    data-modal-target="editClientModal-{{ payment.id }}"
+                                    data-modal-show="editClientModal-{{ payment.id }}"
+                                    class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Mark
+                                    as payed</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="100%" aria-colspan="100%" class="text-center py-4">
+                    No payments registered
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>

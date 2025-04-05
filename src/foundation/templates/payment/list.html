@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ block.super}} :: Payments{% endblock %}
+
+{% block main %}
+
+<div class="py-6 px-8 mt-4 text-gray-900 dark:text-white">
+    <h1 class="text-2xl font-bold">Payments
+    </h1>
+
+    {% include 'payment/payments_table.html' with payments=payment_list %}
+</div>
+{% endblock %}

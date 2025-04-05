@@ -177,3 +177,13 @@ def update_project(request: HttpRequest, pk: int):
     messages.success(request, "Project details updated.")
     
     return HttpResponseRedirect(reverse("projects"))
+
+## Payments views
+class PaymentListView(LoginRequiredMixin, ListView):
+    model = Payment
+    template_name="payment/list.html"       
+    
+    def get_queryset(self):
+        return (Payment.objects.prefetch_related("project__client")
+                               .filter(project__createdBy = self.request.user)
+                               .order_by('due_date'))
