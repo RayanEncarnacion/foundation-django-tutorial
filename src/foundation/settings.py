@@ -41,7 +41,7 @@ if all([ADMIN_USER_NAME, ADMIN_USER_EMAIL]):
     ADMINS += [(f'{ADMIN_USER_NAME}', f'{ADMIN_USER_EMAIL}')]
     MANAGERS=ADMINS
 
-DEBUG = True
+DEBUG = config("DJANGO_DEBUG", cast=bool, default=False)
 
 INTERNAL_IPS = [
     "127.0.0.1"
